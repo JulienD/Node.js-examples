@@ -3,17 +3,20 @@ var net = require('net');
 
 // Setup a tcp server
 var server = net.createServer(function (socket) {
-
-  // Every time someone connects, tell them hello and then close the connection.
-  socket.addListener("connect", function () {
-    sys.puts("Connection from " + socket.remoteAddress);
-    socket.end("Hello World\n");
+  // Display a message to the console and to client on connection.
+  socket.on('connect', function() {
+  	console.log('client connected');
+    socket.write('hello\n\r');
   });
 
+  // Display a message to the console on disconnection.
+  socket.on('end', function() {
+    console.log('client disconnected');
+  });
 });
 
 // Fire up the server bound to port 7000 on localhost
-server.listen(7000, "localhost");
-
-// Put a friendly message on the terminal
-console.log("TCP server listening on port 7000 at localhost.");
+server.listen(7000, function() {
+  // Put a friendly message on the terminal
+  console.log("Server running at http://127.0.0.1:8000/ | Hit CTRL + C to shutdown");
+});
